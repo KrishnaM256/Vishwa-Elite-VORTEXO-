@@ -1,18 +1,25 @@
-import express from 'express';
-import { createClass, getClassDetails, updateClass, deleteClass } from '../controllers/classController.js';
-import { authenticate, authorized } from '../middlewares/authMiddleware.js';
+import express from 'express'
+import {
+  createClass,
+  getClassDetails,
+  updateClass,
+  deleteClass,
+  getAllClasses,
+} from '../controllers/classController.js'
 
-const router = express.Router();
+import { authenticate, authorized } from '../middlewares/authMiddleware.js'
 
-// Class Routes
+const router = express.Router()
+
 router
   .route('/')
-  .post(authenticate, authorized, createClass); // Create a new class (Admin or teacher only)
+  .post(authenticate, authorized, createClass)
+  .get(authenticate, authorized, getAllClasses)
 
 router
   .route('/:id')
-  .get(authenticate, getClassDetails) // Get class details by ID
-  .put(authenticate, authorized, updateClass) // Update class details (Admin or teacher only)
-  .delete(authenticate, authorized, deleteClass); // Delete a class (Admin or teacher only)
+  .get(authenticate, getClassDetails)
+  .put(authenticate, authorized, updateClass)
+  .delete(authenticate, authorized, deleteClass)
 
-export default router;
+export default router

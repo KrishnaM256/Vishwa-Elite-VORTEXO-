@@ -24,6 +24,7 @@ export const getUserProfile = asyncHandler(async (req, res) => {
       state: user.state,
       role: user.role,
       department: user.department,
+      prn: user.prn,
     })
   } else {
     res.status(404)
@@ -45,6 +46,7 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
     user.state = req.body.state || user.state
     user.department = req.body.department || user.department
     user.avatar = avatar
+    user.prn = req.body.prn || user.prn // Update prn if provided
 
     if (req.body.password) {
       user.password = req.body.password
@@ -61,8 +63,12 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
       state: updatedUser.state,
       role: updatedUser.role,
       avatar: updatedUser.avatar,
-      department: updatedUser.updatedUser,
+      department: updatedUser.department,
+      prn: updatedUser.prn, // Include prn in response
     })
+  } else {
+    res.status(404)
+    throw new Error('User not found!')
   }
 })
 
@@ -80,11 +86,21 @@ export const deleteUser = asyncHandler(async (req, res) => {
     throw new Error('User not found!')
   }
 })
-
 export const getUserById = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id).select('-password')
   if (user) {
-    res.json(user)
+    res.json({
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      address: user.address,
+      city: user.city,
+      state: user.state,
+      role: user.role,
+      department: user.department,
+      prn: user.prn,
+    })
   } else {
     res.status(404)
     throw new Error('No user found!')
@@ -103,7 +119,7 @@ export const updateUserById = asyncHandler(async (req, res) => {
     user.state = req.body.state || user.state
     user.role = req.body.role || user.role
     user.department = req.body.department || user.department
-
+    user.prn = req.body.prn || user.prn
     console.log(user)
 
     const updatedUser = await user.save()
@@ -116,6 +132,7 @@ export const updateUserById = asyncHandler(async (req, res) => {
       state: updatedUser.state,
       role: updatedUser.role,
       department: updatedUser.department,
+      prn: updatedUser.prn,
     })
   } else {
     res.status(404)
@@ -139,6 +156,7 @@ export const createUser = asyncHandler(async (req, res) => {
     password,
     department,
     role,
+    prn,
   } = req.body
 
   if (
@@ -150,17 +168,25 @@ export const createUser = asyncHandler(async (req, res) => {
     !state ||
     !password ||
     !department ||
-    !role
+    !role ||
+    !prn
   ) {
     throw new Error('All fields are mandatory!')
   }
 
   const oldUser = await User.findOne({ email })
+  const oldPrn = await User.findOne({ prn }) // Check if PRN already exists
 
   if (oldUser) {
     return res
       .status(400)
       .send({ message: 'User with given email already exists!' })
+  }
+
+  if (oldPrn) {
+    return res
+      .status(400)
+      .send({ message: 'User with given PRN already exists!' })
   }
 
   const salt = await bcrypt.genSalt(10)
@@ -176,7 +202,9 @@ export const createUser = asyncHandler(async (req, res) => {
     avatar,
     department,
     role,
+    prn,
   })
+
   try {
     await newUser.save()
     createToken(res, newUser._id)
@@ -187,10 +215,10 @@ export const createUser = asyncHandler(async (req, res) => {
       address,
       city,
       state,
-      password,
       avatar,
       department,
       role,
+      prn,
     })
   } catch (err) {
     console.log(err)
@@ -201,7 +229,7 @@ export const createUser = asyncHandler(async (req, res) => {
 
 export const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body
-  console.log(email, password);
+  console.log(email, password)
   if (!email || !password) {
     throw new Error('All fields are mandatory!')
   }
@@ -268,6 +296,7 @@ export const resetPassword = asyncHandler(async (req, res) => {
       .status(404)
       .send({ message: 'Reset password token has been expired or not valid' })
   }
+
   const { password, confirmPassword } = req.body
   if (!password || !confirmPassword) {
     return res.status(400).send({ message: 'Please enter reset password' })

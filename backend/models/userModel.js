@@ -18,7 +18,7 @@ const userSchema = mongoose.Schema(
     },
     address: {
       type: String,
-      required: [true, 'Please enter you address'],
+      required: [true, 'Please enter your address'],
     },
     city: {
       type: String,
@@ -47,7 +47,8 @@ const userSchema = mongoose.Schema(
     },
     prn: {
       type: Number,
-      required: [true, 'Please enter unique number'],
+      required: true,
+      unique: true, // Ensure PRN is unique
     },
     resetPasswordToken: String,
     resetPasswordExpire: Date,
@@ -56,6 +57,20 @@ const userSchema = mongoose.Schema(
     timestamps: true,
   }
 )
+
+// Static method to generate the next prn
+userSchema.statics.generateNextPrn = async function () {
+  const lastUser = await this.findOne().sort({ prn: -1 }).exec() // Get the last user by prn
+  return lastUser ? lastUser.prn + 1 : 1 // Increment or start at 1
+}
+
+// Middleware to set the unique prn before saving
+userSchema.pre('save', async function (next) {
+  if (this.isNew) {
+    this.prn = await this.constructor.generateNextPrn() // Get the next unique prn
+  }
+  next()
+})
 
 userSchema.methods.getResetPasswordToken = function () {
   const resetToken = crypto.randomBytes(20).toString('hex')

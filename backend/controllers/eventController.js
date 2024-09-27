@@ -1,6 +1,5 @@
 import Event from '../models/eventModel.js'
 
-// Create a new event
 export const createEvent = async (req, res) => {
   const { eventName, description, date, startTime, endTime, location } =
     req.body
@@ -23,7 +22,6 @@ export const createEvent = async (req, res) => {
   }
 }
 
-// Get event details
 export const getEventDetails = async (req, res) => {
   const { id } = req.params
   try {
@@ -37,7 +35,6 @@ export const getEventDetails = async (req, res) => {
   }
 }
 
-// Update an event
 export const updateEvent = async (req, res) => {
   const { id } = req.params
   const updates = req.body
@@ -57,7 +54,6 @@ export const updateEvent = async (req, res) => {
   }
 }
 
-// Delete an event
 export const deleteEvent = async (req, res) => {
   const { id } = req.params
 
@@ -72,7 +68,6 @@ export const deleteEvent = async (req, res) => {
   }
 }
 
-// Get events a user is participating in
 export const getEventsByUser = async (req, res) => {
   const { userId } = req.params
   try {

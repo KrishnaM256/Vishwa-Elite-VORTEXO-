@@ -313,3 +313,22 @@ export const resetPassword = asyncHandler(async (req, res) => {
   await user.save()
   res.status(200).send({ message: 'Successfully changed the password' })
 })
+export const getStudents = asyncHandler(async (req, res) => {
+  // Fetch all users with the role of 'student'
+  const students = await User.find({ role: 'student' })
+  if (students) {
+    res.status(200).json(students)
+  } else {
+    res.status(404).send({ message: 'No students found' })
+  }
+})
+
+export const getTeachers = asyncHandler(async (req, res) => {
+  // Fetch all users with the role of 'teacher'
+  const teachers = await User.find({ role: 'teacher' })
+  if (teachers) {
+    res.status(200).json(teachers)
+  } else {
+    res.status(404).send({ message: 'No teachers found' })
+  }
+})

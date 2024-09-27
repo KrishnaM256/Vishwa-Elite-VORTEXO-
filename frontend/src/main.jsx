@@ -20,7 +20,7 @@ import AdminRoute from './components/routes/AdminRoute'
 import TeacherRoute from './components/routes/TeacherRoute'
 import StudentRoute from './components/routes/StudentRoute'
 import Dashboard from './components/Dashboard/Dashboard.jsx'
-
+import MainEvent from './components/Event/MainEvent.jsx'
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />}>
@@ -45,6 +45,8 @@ const router = createBrowserRouter(
       <Route path="student" element={<StudentRoute />}>
         {/* <Route path='courses' element={<StudentCourses />} />
         <Route path='grades' element={<ViewGrades />} /> */}
+      </Route>
+      <Route path="MainEvent" element={<MainEvent/>}>
       </Route>
     </Route>
   )

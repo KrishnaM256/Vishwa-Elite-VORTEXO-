@@ -2,9 +2,17 @@ import Event from '../models/eventModel.js';
 
 // Create a new event
 export const createEvent = async (req, res) => {
-  const { eventName, description, date, location } = req.body;
+  const { eventName, description, date, startTime, endTime, location } = req.body;
   try {
-    const newEvent = new Event({ eventName, description, date, location, createdBy: req.user._id });
+    const newEvent = new Event({ 
+      eventName, 
+      description, 
+      date, 
+      startTime, 
+      endTime, 
+      location, 
+      createdBy: req.user._id 
+    });
     await newEvent.save();
     res.status(201).json({ message: 'Event created successfully', event: newEvent });
   } catch (error) {

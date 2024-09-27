@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs'
 import createToken from '../utils/createToken.js'
 import { sendMail } from '../utils/sendMail.js'
 import crypto from 'crypto'
+import { log } from 'console'
 
 export const getAllUsers = asyncHandler(async (req, res) => {
   const users = await User.find({})
@@ -200,6 +201,7 @@ export const createUser = asyncHandler(async (req, res) => {
 
 export const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body
+  console.log(email, password);
   if (!email || !password) {
     throw new Error('All fields are mandatory!')
   }

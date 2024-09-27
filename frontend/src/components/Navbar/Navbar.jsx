@@ -6,7 +6,7 @@ const Navbar = () => {
   const lst = [];
 
   return (
-    <div className='flex flex-row justify-between items-center px-5 py-3'>
+    <div className='flex flex-row justify-between items-center py-3'>
       <Searchbar/>
 
       <div className='flex flex-row items-center gap-3'>

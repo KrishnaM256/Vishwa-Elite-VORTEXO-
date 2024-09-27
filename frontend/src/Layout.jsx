@@ -8,7 +8,7 @@ const Layout = () => {
   return (
     <div className="flex flex-row h-screen gap-3 bg-[#F3F3F3]">
       <Sidebar />
-      <div className="flex flex-col flex-1">
+      <div className="flex flex-col flex-1 p-2">
         <Navbar />
         <div className="">
           <Outlet /> 

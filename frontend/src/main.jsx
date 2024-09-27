@@ -19,11 +19,12 @@ import PrivateRoute from './components/routes/PrivateRoute'
 import AdminRoute from './components/routes/AdminRoute'
 import TeacherRoute from './components/routes/TeacherRoute'
 import StudentRoute from './components/routes/StudentRoute'
+import Dashboard from './components/Dashboard/Dashboard.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />}>
-      <Route path="" element={<Login />} />
+      <Route path="" element={<Dashboard />} />
       <Route path="login" element={<Login />} />
 
       <Route path="" element={<PrivateRoute />}>

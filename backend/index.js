@@ -4,7 +4,8 @@ import connectDB from './config/connectDB.js'
 import cookieParser from 'cookie-parser'
 import path from 'path'
 import userRoutes from './routes/userRoutes.js'
-
+import classRoutes from './routes/classRoute.js'
+import scheduleRoute from './routes/scheduleRoutes.js'
 import cors from 'cors'
 
 configDotenv()
@@ -26,6 +27,9 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.static('uploads'))
 
 app.use('/api/users', userRoutes)
+app.use('/api/class', classRoutes)
+app.use('/api/schedules', scheduleRoute)
+
 
 app.listen(port, () => {
   console.log(`Running on server http://localhost:${port}`)

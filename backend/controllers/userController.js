@@ -15,14 +15,14 @@ export const getUserProfile = asyncHandler(async (req, res) => {
   if (user) {
     res.status(200).json({
       id: user._id,
-      firstName: user.firstName,
-      lastName: user.lastName,
+      name: user.name,
       email: user.email,
       phone: user.phone,
       address: user.address,
       city: user.city,
       state: user.state,
-      role: updateUserProfile.role,
+      role: user.role,
+      department: user.department,
     })
   } else {
     res.status(404)
@@ -36,13 +36,13 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
   console.log(user)
 
   if (user) {
-    user.firstName = req.body.firstName || user.firstName
-    user.lastName = req.body.lastName || user.lastName
+    user.name = req.body.name || user.name
     user.email = req.body.email || user.email
     user.phone = req.body.phone || user.phone
     user.address = req.body.address || user.address
     user.city = req.body.city || user.city
     user.state = req.body.state || user.state
+    user.department = req.body.department || user.department
     user.avatar = avatar
 
     if (req.body.password) {
@@ -52,8 +52,7 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
     const updatedUser = await user.save()
 
     res.status(200).json({
-      firstName: updatedUser.firstName,
-      lastName: updatedUser.lastName,
+      name: updatedUser.name,
       email: updatedUser.email,
       phone: updatedUser.phone,
       address: updatedUser.address,
@@ -61,6 +60,7 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
       state: updatedUser.state,
       role: updatedUser.role,
       avatar: updatedUser.avatar,
+      department: updatedUser.updatedUser,
     })
   }
 })
@@ -94,26 +94,27 @@ export const updateUserById = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id)
 
   if (user) {
-    user.firstName = req.body.firstName || user.firstName
-    user.lastName = req.body.lastName || user.lastName
+    user.name = req.body.name || user.name
     user.email = req.body.email || user.email
     user.phone = req.body.phone || user.phone
     user.address = req.body.address || user.address
     user.city = req.body.city || user.city
     user.state = req.body.state || user.state
     user.role = req.body.role || user.role
+    user.department = req.body.department || user.department
 
     console.log(user)
+
     const updatedUser = await user.save()
     res.status(200).json({
-      firstName: updatedUser.firstName,
-      lastName: updatedUser.lastName,
+      name: updatedUser.name,
       email: updatedUser.email,
       phone: updatedUser.phone,
       address: updatedUser.address,
       city: updatedUser.city,
       state: updatedUser.state,
       role: updatedUser.role,
+      department: updatedUser.department,
     })
   } else {
     res.status(404)
@@ -127,18 +128,28 @@ export const createUser = asyncHandler(async (req, res) => {
 
   const avatar = req.files.avatar ? req.files.avatar[0].filename : ''
 
-  const { firstName, lastName, email, phone, address, city, state, password } =
-    req.body
+  const {
+    name,
+    email,
+    phone,
+    address,
+    city,
+    state,
+    password,
+    department,
+    role,
+  } = req.body
 
   if (
-    !firstName ||
-    !lastName ||
+    !name ||
     !email ||
     !phone ||
     !address ||
     !city ||
     !state ||
-    !password
+    !password ||
+    !department ||
+    !role
   ) {
     throw new Error('All fields are mandatory!')
   }
@@ -154,8 +165,7 @@ export const createUser = asyncHandler(async (req, res) => {
   const salt = await bcrypt.genSalt(10)
   const hashedPassword = await bcrypt.hash(password, salt)
   const newUser = new User({
-    firstName,
-    lastName,
+    name,
     email,
     phone,
     address,
@@ -163,13 +173,14 @@ export const createUser = asyncHandler(async (req, res) => {
     state,
     password: hashedPassword,
     avatar,
+    department,
+    role,
   })
   try {
     await newUser.save()
     createToken(res, newUser._id)
     res.status(200).json({
-      firstName,
-      lastName,
+      name,
       email,
       phone,
       address,
@@ -177,6 +188,8 @@ export const createUser = asyncHandler(async (req, res) => {
       state,
       password,
       avatar,
+      department,
+      role,
     })
   } catch (err) {
     console.log(err)
@@ -224,7 +237,7 @@ export const forgotPassword = asyncHandler(async (req, res) => {
   )}/password/reset/${resetToken}`
   console.log(user)
   const subject = 'Password Reset Request'
-  const message = `Dear ${user.firstName},\n\nWe received a request to reset your password. You can reset your password by clicking the link below:\n\n${resetURL}\n\nIf you did not request a password reset, please disregard this email.\n\nThank you,\nName`
+  const message = `Dear ${user.name},\n\nWe received a request to reset your password. You can reset your password by clicking the link below:\n\n${resetURL}\n\nIf you did not request a password reset, please disregard this email.\n\nThank you,\nName`
   try {
     sendMail({ email, subject, message })
     return res.status(200).send({ message: 'Email sent successfully' })
@@ -233,7 +246,6 @@ export const forgotPassword = asyncHandler(async (req, res) => {
     user.resetPasswordToken = undefined
     user.save({ validateBeforeSave: false })
     console.log(e)
-
     return res.status(400).send({ message: 'Failed to send mail' })
   }
 })

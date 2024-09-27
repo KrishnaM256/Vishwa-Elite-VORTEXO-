@@ -1,19 +1,21 @@
-import React from 'react'
-import Header from './components/Header.jsx'
-import Footer from './components/Footer.jsx'
-import { Outlet } from 'react-router-dom'
+import React from 'react';
+import { Outlet } from 'react-router-dom';
+import Sidebar from './components/Sidebar/Sidebar.jsx';
+import Navbar from './components/Navbar/Navbar.jsx'
+import './Layout.css';
 
-function Layout() {
+const Layout = () => {
   return (
-    <div>
-      <Header />
-      <main>
-        <Outlet />
-      </main>
-      <Footer />
+    <div className="flex flex-row h-screen">
+      <Sidebar />
+      <div className="flex flex-col flex-1">
+        <Navbar />
+        <div className="">
+          <Outlet /> 
+        </div>
+      </div>
     </div>
   );
-}
+};
 
-export default Layout
-
+export default Layout;

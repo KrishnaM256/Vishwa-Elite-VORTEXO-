@@ -19,32 +19,52 @@ const Header = () => {
         <ul>
           {userInfo && (
             <>
-              <li><Link to="/dashboard">Dashboard</Link></li>
-              <li><Link to="/profile">Profile</Link></li>
+              <li>
+                <Link to="/dashboard">Dashboard</Link>
+              </li>
+              <li>
+                <Link to="/profile">Profile</Link>
+              </li>
               {userInfo.role === 'admin' && (
                 <>
-                  <li><Link to="/admin/manage-users">Manage Users</Link></li>
-                  <li><Link to="/admin/manage-courses">Manage Courses</Link></li>
+                  <li>
+                    <Link to="/admin/manage-users">Manage Users</Link>
+                  </li>
+                  <li>
+                    <Link to="/admin/manage-courses">Manage Courses</Link>
+                  </li>
                 </>
               )}
               {userInfo.role === 'teacher' && (
                 <>
-                  <li><Link to="/teacher/courses">My Courses</Link></li>
-                  <li><Link to="/teacher/grades">Manage Grades</Link></li>
+                  <li>
+                    <Link to="/teacher/courses">My Courses</Link>
+                  </li>
+                  <li>
+                    <Link to="/teacher/grades">Manage Grades</Link>
+                  </li>
                 </>
               )}
               {userInfo.role === 'student' && (
                 <>
-                  <li><Link to="/student/courses">My Courses</Link></li>
-                  <li><Link to="/student/grades">My Grades</Link></li>
+                  <li>
+                    <Link to="/student/courses">My Courses</Link>
+                  </li>
+                  <li>
+                    <Link to="/student/grades">My Grades</Link>
+                  </li>
                 </>
               )}
               <li>Welcome, {userInfo.name}</li>
-              <li><button onClick={logoutHandler}>Logout</button></li>
+              <li>
+                <button onClick={logoutHandler}>Logout</button>
+              </li>
             </>
           )}
           {!userInfo && (
-            <li><Link to="/login">Login</Link></li>
+            <li>
+              <Link to="/login">Login</Link>
+            </li>
           )}
         </ul>
       </nav>

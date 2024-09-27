@@ -6,6 +6,7 @@ import path from 'path'
 import userRoutes from './routes/userRoutes.js'
 import classRoutes from './routes/classRoute.js'
 import scheduleRoute from './routes/scheduleRoutes.js'
+import attendanceRoute from './routes/attendanceRoutes.js'
 import cors from 'cors'
 
 configDotenv()
@@ -29,6 +30,7 @@ app.use(express.static('uploads'))
 app.use('/api/users', userRoutes)
 app.use('/api/class', classRoutes)
 app.use('/api/schedules', scheduleRoute)
+app.use('/api/attendance', attendanceRoute)
 
 
 app.listen(port, () => {

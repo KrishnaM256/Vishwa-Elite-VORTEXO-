@@ -45,6 +45,10 @@ const userSchema = mongoose.Schema(
       type: String,
       required: [true, 'Please enter department'],
     },
+    prn: {
+      type: Number,
+      required: [true, 'Please enter unique number'],
+    },
     resetPasswordToken: String,
     resetPasswordExpire: Date,
   },

@@ -6,3 +6,24 @@
 body {
     font-family: "Inter", sans-serif !important;
 }
+
+.custom-scrollbar::-webkit-scrollbar {
+    display: none;
+    /* height: 0; */
+}
+
+/* .custom-scrollbar::-webkit-scrollbar-track {
+    width: 0;
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    width: 0;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* For Firefox */
+.custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+} 

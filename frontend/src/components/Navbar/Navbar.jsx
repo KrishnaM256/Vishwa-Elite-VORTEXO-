@@ -13,7 +13,7 @@ const Navbar = () => {
         <div className='flex flex-row items-center gap-2'>
           <p className='text-sm font-bold'>Viraj Zuluk</p>
           <p>•</p>
-          <p className='text-xs text-[#7065FF]'> Admin</p>
+          <p className='text-xs text-[#7065FF]'>Admin</p>
         </div>
         <img src='user.png' alt='profile' className='w-10 h-10 rounded-full'/>
       </div>
